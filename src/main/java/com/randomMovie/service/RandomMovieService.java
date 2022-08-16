@@ -42,11 +42,11 @@ public class RandomMovieService {
 
 		);
 
-		MatchOperation matchStage1 = Aggregation.match(Criteria.where("tags"));
+		MatchOperation matchStage1 = Aggregation.match(Criteria.where("rating").exists(true).gt(7));
 		SampleOperation sampleStage = Aggregation.sample(10);
 		Aggregation aggOp = Aggregation.newAggregation(matchStage1, sampleStage);
 
-		AggregationResults<RandomMovie> output = mongoTemplate.aggregate(aggregation1, "randomMovie",
+		AggregationResults<RandomMovie> output = mongoTemplate.aggregate(aggOp, "randomMovie",
 				RandomMovie.class);
 
 		return output;
