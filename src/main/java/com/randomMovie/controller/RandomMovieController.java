@@ -42,12 +42,20 @@ public class RandomMovieController {
 
 		return new ResponseEntity<List<RandomMovie>>(movies, new HttpHeaders(), HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "stars/{name}", method = RequestMethod.GET)
 	public ResponseEntity<List<RandomMovie>> getByStars(@PathVariable String name) {
 
 		List<RandomMovie> movies = randomMovie.getByStars(name);
 
 		return new ResponseEntity<List<RandomMovie>>(movies, new HttpHeaders(), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "typeChange", method = RequestMethod.GET)
+	public ResponseEntity<String> typeChange() {
+
+		randomMovie.saveTypeChange();
+
+		return new ResponseEntity<String>("", new HttpHeaders(), HttpStatus.OK);
 	}
 }

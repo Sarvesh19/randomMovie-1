@@ -42,12 +42,11 @@ public class RandomMovieService {
 
 		);
 
-		MatchOperation matchStage1 = Aggregation.match(Criteria.where("rating").is("7"));
+		MatchOperation matchStage1 = Aggregation.match(Criteria.where("rating"));
 		SampleOperation sampleStage = Aggregation.sample(10);
 		Aggregation aggOp = Aggregation.newAggregation(matchStage1, sampleStage);
 
-		AggregationResults<RandomMovie> output = mongoTemplate.aggregate(aggOp, "randomMovie",
-				RandomMovie.class);
+		AggregationResults<RandomMovie> output = mongoTemplate.aggregate(aggOp, "randomMovie", RandomMovie.class);
 
 		return output;
 	}
@@ -58,6 +57,14 @@ public class RandomMovieService {
 
 	public List<RandomMovie> getByStars(String name) {
 		return randomMovie.findByQueryByStars(name);
+	}
+
+	public void saveTypeChange() {
+		randomMovie.findAll().forEach(x -> {
+			x.setRating(Float.valueOf(x.getRating()));
+			randomMovie.save(x);
+		});
+		;
 	}
 
 }
