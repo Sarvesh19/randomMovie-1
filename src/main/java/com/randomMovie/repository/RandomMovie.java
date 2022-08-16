@@ -94,7 +94,7 @@ public class RandomMovie {
 
 	@Override
 	public String toString() {
-		return "RandomMovie [id=" + id + ", image=" + image + ", genre=" + genre + ", title=" + title + ", detail="
+		return "RandomMovie [id=" + _id + ", image=" + image + ", genre=" + genre + ", title=" + title + ", detail="
 				+ detail + ", rating=" + rating + ", stars=" + stars + ", votes=" + votes + ", hitCount=" + hitCount
 				+ "]";
 	}
