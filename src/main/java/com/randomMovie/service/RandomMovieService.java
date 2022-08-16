@@ -41,9 +41,7 @@ public class RandomMovieService {
 		
 		
 		 Aggregation aggregation1 = Aggregation.newAggregation(
-	                Aggregation.sample(10),
-                    Aggregation.match(Criteria.where("rating").gte("7")),
-                    Aggregation.match(Criteria.where("votes").gte("1000"))
+	                Aggregation.sample(10)
 	               
 	        );
 		
