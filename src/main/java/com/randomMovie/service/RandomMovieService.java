@@ -40,13 +40,14 @@ public class RandomMovieService {
 		Aggregation aggregation = Aggregation.newAggregation(matchStage);
 		
 		
-//		 Aggregation aggregation1 = Aggregation.newAggregation(
-//	                Aggregation.sample(2)
-//	                
-//	               
-//	        );
+		 Aggregation aggregation1 = Aggregation.newAggregation(
+	                Aggregation.sample(10),
+                    Aggregation.match(Criteria.where("rating").gte("7")),
+                    Aggregation.match(Criteria.where("votes").gte("1000"))
+	               
+	        );
 		
-		AggregationResults<RandomMovie> output = mongoTemplate.aggregate(aggregation, "randomMovie", RandomMovie.class);
+		AggregationResults<RandomMovie> output = mongoTemplate.aggregate(aggregation1, "randomMovie", RandomMovie.class);
 
 		return output;
 	}
