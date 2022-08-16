@@ -7,9 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "randomMovie")
 public class RandomMovie {
 
-	
-	private ObjectId id;
 	@Id
+	private ObjectId _id;
+	
 	private String image;
 	private String genre;
 	private String title;
@@ -21,11 +21,11 @@ public class RandomMovie {
 	private Integer check;
 
 	public ObjectId getId() {
-		return id;
+		return _id;
 	}
 
 	public void setId(ObjectId _id) {
-		this.id = _id;
+		this._id = _id;
 	}
 
 	public String getImage() {
