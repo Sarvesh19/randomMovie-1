@@ -35,7 +35,7 @@ public class RandomMovieService {
 		
 		//return randomMovie.getRandomTenMovies();
 
-		SampleOperation matchStage = Aggregation.sample(1);
+		SampleOperation matchStage = Aggregation.sample(10);
 		
 		Aggregation aggregation = Aggregation.newAggregation(matchStage);
 		
