@@ -23,5 +23,9 @@ public interface RandomMovieRepo extends MongoRepository<RandomMovie, String> {
     List<RandomMovie> findByQueryByStars(String stars);
 	
 	
+    @Query("{$and :[{rating: {$gte: ?0}},{votes_ln: {$gte: ?1}}] }")
+    List<RandomMovie> randomGte7(int rating,int votes);
+
+	
 	
 }

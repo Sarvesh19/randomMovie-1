@@ -1,6 +1,9 @@
 package com.randomMovie.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +33,7 @@ public class RandomMovieService {
 		this.mongoTemplate = mongoTemplate;
 	}
 
-	public AggregationResults<RandomMovie> getRandomMovie() {
+	public Set<RandomMovie> getRandomMovie() {
 
 		// return randomMovie.getRandomTenMovies();
 
@@ -47,8 +50,20 @@ public class RandomMovieService {
 		Aggregation aggOp = Aggregation.newAggregation(matchStage1, sampleStage);
 
 		AggregationResults<RandomMovie> output = mongoTemplate.aggregate(aggOp, "randomMovie", RandomMovie.class);
+		Random r = new Random();
 
-		return output;
+		List<RandomMovie> list = randomMovie.randomGte7(7, 5000);
+
+		Set<RandomMovie> setOfMovies = new HashSet<>();
+		// List<RandomMovie> list = randomMovie.findAll();
+		while (setOfMovies.size() == 10) {
+			setOfMovies.add(list.get(r.nextInt(list.size())));
+		}
+		System.out.println(list);
+//		randomMovie.findAll().forEach(x ->{
+//			System.out.println(x);
+//		});
+		return setOfMovies;
 	}
 
 	public List<RandomMovie> getQuery(String name) {
@@ -61,14 +76,14 @@ public class RandomMovieService {
 
 	public void saveTypeChange() {
 		randomMovie.findAll().forEach(x -> {
-			if(x.getVotes() != null) {
+			if (x.getVotes() != null) {
 				x.setVotes_ln(Long.valueOf(String.valueOf(x.getVotes()).replace(",", "")));
 				randomMovie.save(x);
 			} else {
 				x.setVotes_ln(0l);
 				randomMovie.save(x);
 			}
-			
+
 		});
 		;
 	}

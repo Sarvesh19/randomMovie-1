@@ -3,6 +3,7 @@ package com.randomMovie.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -28,11 +29,11 @@ public class RandomMovieController {
 	private RandomMovieService randomMovie;
 
 	@RequestMapping(value = "randomMovies", method = RequestMethod.GET)
-	public ResponseEntity<AggregationResults<RandomMovie>> getRandomMovies() {
+	public ResponseEntity<Set<RandomMovie>> getRandomMovies() {
 
-		AggregationResults<RandomMovie> movies = randomMovie.getRandomMovie();
+		Set<RandomMovie> movies = randomMovie.getRandomMovie();
 
-		return new ResponseEntity<AggregationResults<RandomMovie>>(movies, new HttpHeaders(), HttpStatus.OK);
+		return new ResponseEntity<Set<RandomMovie>>(movies, new HttpHeaders(), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "movie/{movie}", method = RequestMethod.GET)
