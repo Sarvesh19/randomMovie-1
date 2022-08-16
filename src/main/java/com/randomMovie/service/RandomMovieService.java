@@ -56,7 +56,7 @@ public class RandomMovieService {
 
 		Set<RandomMovie> setOfMovies = new HashSet<>();
 		// List<RandomMovie> list = randomMovie.findAll();
-		while (setOfMovies.size() == 10) {
+		while (setOfMovies.size() != 10) {
 			setOfMovies.add(list.get(r.nextInt(list.size())));
 		}
 		System.out.println(list);
