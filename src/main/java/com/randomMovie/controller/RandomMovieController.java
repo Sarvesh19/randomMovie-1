@@ -43,7 +43,7 @@ public class RandomMovieController {
 		return new ResponseEntity<List<RandomMovie>>(movies, new HttpHeaders(), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "stars/{movie}", method = RequestMethod.GET)
+	@RequestMapping(value = "stars/{name}", method = RequestMethod.GET)
 	public ResponseEntity<List<RandomMovie>> getByStars(@PathVariable String name) {
 
 		List<RandomMovie> movies = randomMovie.getByStars(name);
