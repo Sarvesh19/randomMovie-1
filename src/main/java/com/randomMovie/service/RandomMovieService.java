@@ -54,5 +54,10 @@ public class RandomMovieService {
 	public List<RandomMovie> getQuery(String name){
 		return randomMovie.findByQuery(name);
 	}
+	
+
+	public List<RandomMovie> getByStars(String name){
+		return randomMovie.findByQueryByStars(name);
+	}
 
 }

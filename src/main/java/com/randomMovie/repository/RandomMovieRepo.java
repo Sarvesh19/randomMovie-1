@@ -17,4 +17,11 @@ public interface RandomMovieRepo extends MongoRepository<RandomMovie, String> {
 	
 	@Query(value = "{'title': {$regex : ?0, $options: 'i'}}")
     List<RandomMovie> findByQuery(String title);
+	
+	
+	@Query(value = "{'stars': {$regex : ?0, $options: 'i'}}")
+    List<RandomMovie> findByQueryByStars(String stars);
+	
+	
+	
 }
