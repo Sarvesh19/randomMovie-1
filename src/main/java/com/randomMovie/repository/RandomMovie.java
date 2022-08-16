@@ -14,7 +14,7 @@ public class RandomMovie {
 	private String genre;
 	private String title;
 	private String detail;
-	private String rating;
+	private Float rating;
 	private String stars;
 	private String votes;
 	private Integer hitCount;
@@ -60,11 +60,11 @@ public class RandomMovie {
 		this.detail = detail;
 	}
 
-	public String getRating() {
+	public Float getRating() {
 		return rating;
 	}
 
-	public void setRating(String rating) {
+	public void setRating(Float rating) {
 		this.rating = rating;
 	}
 
