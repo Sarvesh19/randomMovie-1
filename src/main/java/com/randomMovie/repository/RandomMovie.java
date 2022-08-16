@@ -17,6 +17,8 @@ public class RandomMovie {
 	private Float rating;
 	private String stars;
 	private String votes;
+	private Long votes_ln;
+
 	private Integer hitCount;
 	private Integer check;
 
@@ -90,6 +92,14 @@ public class RandomMovie {
 
 	public void setHitCount(Integer hitCount) {
 		this.hitCount = hitCount;
+	}
+
+	public Long getVotes_ln() {
+		return votes_ln;
+	}
+
+	public void setVotes_ln(Long votes_ln) {
+		this.votes_ln = votes_ln;
 	}
 
 	@Override

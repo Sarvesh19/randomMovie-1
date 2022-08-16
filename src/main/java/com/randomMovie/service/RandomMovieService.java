@@ -61,11 +61,11 @@ public class RandomMovieService {
 
 	public void saveTypeChange() {
 		randomMovie.findAll().forEach(x -> {
-			if(x.getRating() != null) {
-				x.setRating(Float.valueOf(x.getRating()));
+			if(x.getVotes() != null) {
+				x.setVotes_ln(Long.valueOf(String.valueOf(x.getVotes()).replace(",", "")));
 				randomMovie.save(x);
 			} else {
-				x.setRating(0.0f);
+				x.setVotes_ln(0l);
 				randomMovie.save(x);
 			}
 			
