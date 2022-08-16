@@ -42,7 +42,7 @@ public class RandomMovieService {
 
 		);
 
-		MatchOperation matchStage1 = Aggregation.match(Criteria.where("rating").gte(7));
+		MatchOperation matchStage1 = Aggregation.match(Criteria.where("rating").gte(7).and("votes_ln").gt(5000));
 		SampleOperation sampleStage = Aggregation.sample(10);
 		Aggregation aggOp = Aggregation.newAggregation(matchStage1, sampleStage);
 
