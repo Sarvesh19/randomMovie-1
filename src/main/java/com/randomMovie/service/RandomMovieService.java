@@ -81,7 +81,8 @@ public class RandomMovieService {
 				list = random;
 //				list = random.stream().filter(x -> x.getVotes_ln() != null)
 //						.filter(x -> x.getVotes_ln() >= Long.valueOf(vote)).collect(Collectors.toList());
-			} else if (!vote.equals("undefined")) {
+			} 
+			if (!vote.equals("undefined")) {
 				random = randomMovie.randomGte7(7, 2000);
 				list = random.stream().filter(x -> x.getVotes_ln() != null)
 						.filter(x -> x.getVotes_ln() >= Long.valueOf(vote)).collect(Collectors.toList());
