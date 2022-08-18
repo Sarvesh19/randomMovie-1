@@ -73,35 +73,38 @@ public class RandomMovieService {
 			Sort sort = Sort.by("score");
 			List<RandomMovie> random = new ArrayList<>();
 			List<RandomMovie> list = new ArrayList<>();
-			if (!genre.equals("undefined")&& !genre.equals("")) {
+			if (!genre.equals("undefined") && !genre.equals("")) {
 				TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(genre);
 				TextQuery query = TextQuery.queryText(criteria);
 
 				random = mongoTemplate.find(query, RandomMovie.class);
+				list = random;
+//				list = random.stream().filter(x -> x.getVotes_ln() != null)
+//						.filter(x -> x.getVotes_ln() >= Long.valueOf(vote)).collect(Collectors.toList());
 			} else if (!vote.equals("undefined")) {
 				random = randomMovie.randomGte7(7, 2000);
-
+				list = random.stream().filter(x -> x.getVotes_ln() != null)
+						.filter(x -> x.getVotes_ln() >= Long.valueOf(vote)).collect(Collectors.toList());
 			}
 
 //		    List<RandomMovie> random = mongoTemplate.find(query, RandomMovie.class);
 			// System.out.println(random);
-			//random = randomMovie.randomGte7(7, 2000);
+			// random = randomMovie.randomGte7(7, 2000);
 			Random r = new Random();
 			Set<RandomMovie> setOfMovies = new HashSet<>();
 
-			if (!vote.equals("undefined")) {
-				list = random.stream().filter(x -> x.getVotes_ln() != null).filter(x -> x.getVotes_ln() >= Long.valueOf(vote))
-						.collect(Collectors.toList());
-				// List<RandomMovie> list = randomMovie.findAll();
-				if(list.size()<=10) {
-					return new HashSet<RandomMovie>(list) ;
-				} else {
-					while (setOfMovies.size() != 10) {
-						setOfMovies.add(list.get(r.nextInt(list.size())));
-					}
+//			if (!vote.equals("undefined")) {
+			
+			// List<RandomMovie> list = randomMovie.findAll();
+			if (list.size() <= 10) {
+				return new HashSet<RandomMovie>(list);
+			} else {
+				while (setOfMovies.size() != 10) {
+					setOfMovies.add(list.get(r.nextInt(list.size())));
 				}
-				
 			}
+
+//			}
 
 			return setOfMovies;
 		}
@@ -128,7 +131,7 @@ public class RandomMovieService {
 	public List<RandomMovie> getByStars(String name) {
 		return randomMovie.findByQueryByStars(name);
 	}
-	
+
 	public List<RandomMovie> getByTitle(String name) {
 		return randomMovie.findByQuery(name);
 	}
@@ -136,20 +139,19 @@ public class RandomMovieService {
 	public void saveTypeChange() {
 		randomMovie.findAll().forEach(x -> {
 			System.out.println(x.getVotes());
-			if(x.getVotes_ln() == null) {
+			if (x.getVotes_ln() == null) {
 				if (x.getVotes() == "null") {
 					System.out.println(x.getVotes());
 					x.setVotes_ln(0l);
 					randomMovie.save(x);
-			} else if (x.getVotes() != null ) {
-				x.setVotes_ln(Long.valueOf(String.valueOf(x.getVotes()).replace(",", "")));
-				randomMovie.save(x);
-			} else {
-				x.setVotes_ln(0l);
-				randomMovie.save(x);
-			}	
+				} else if (x.getVotes() != null) {
+					x.setVotes_ln(Long.valueOf(String.valueOf(x.getVotes()).replace(",", "")));
+					randomMovie.save(x);
+				} else {
+					x.setVotes_ln(0l);
+					randomMovie.save(x);
+				}
 			}
-			
 
 		});
 		;
