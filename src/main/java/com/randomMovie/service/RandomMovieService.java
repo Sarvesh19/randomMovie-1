@@ -93,9 +93,14 @@ public class RandomMovieService {
 				list = random.stream().filter(x -> x.getVotes_ln() != null).filter(x -> x.getVotes_ln() >= Long.valueOf(vote))
 						.collect(Collectors.toList());
 				// List<RandomMovie> list = randomMovie.findAll();
-				while (setOfMovies.size() != 10) {
-					setOfMovies.add(list.get(r.nextInt(list.size())));
+				if(list.size()<=10) {
+					return new HashSet<RandomMovie>(list) ;
+				} else {
+					while (setOfMovies.size() != 10) {
+						setOfMovies.add(list.get(r.nextInt(list.size())));
+					}
 				}
+				
 			}
 
 			return setOfMovies;
