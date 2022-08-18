@@ -1,6 +1,7 @@
 package com.randomMovie.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -54,7 +55,7 @@ public class RandomMovieService {
 
 		);
 		if (Objects.nonNull(vote) && !vote.equals("undefined")
-				|| Objects.nonNull(genre) && !genre.equals("undefined")) {
+				|| Objects.nonNull(genre) && !genre.equals("undefined") && !genre.equals("")) {
 //			MatchOperation matchStage1 = Aggregation.match(Criteria.where("votes_ln").gte(vote).orOperator(Criteria.where("genre").is(genre.split(",")[0])));
 //			//SampleOperation sampleStage = Aggregation.sample(1);
 //			Aggregation aggOp = Aggregation.newAggregation(matchStage1);
@@ -72,7 +73,7 @@ public class RandomMovieService {
 			Sort sort = Sort.by("score");
 			List<RandomMovie> random = new ArrayList<>();
 			List<RandomMovie> list = new ArrayList<>();
-			if (!genre.equals("undefined")) {
+			if (!genre.equals("undefined")&& !genre.equals("")) {
 				TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(genre);
 				TextQuery query = TextQuery.queryText(criteria);
 
@@ -122,19 +123,28 @@ public class RandomMovieService {
 	public List<RandomMovie> getByStars(String name) {
 		return randomMovie.findByQueryByStars(name);
 	}
+	
+	public List<RandomMovie> getByTitle(String name) {
+		return randomMovie.findByQuery(name);
+	}
 
 	public void saveTypeChange() {
 		randomMovie.findAll().forEach(x -> {
 			System.out.println(x.getVotes());
-			if (x.getVotes() == "null") {
-
-			} else if (x.getVotes() != null || x.getVotes() != "") {
+			if(x.getVotes_ln() == null) {
+				if (x.getVotes() == "null") {
+					System.out.println(x.getVotes());
+					x.setVotes_ln(0l);
+					randomMovie.save(x);
+			} else if (x.getVotes() != null ) {
 				x.setVotes_ln(Long.valueOf(String.valueOf(x.getVotes()).replace(",", "")));
 				randomMovie.save(x);
 			} else {
 				x.setVotes_ln(0l);
 				randomMovie.save(x);
+			}	
 			}
+			
 
 		});
 		;

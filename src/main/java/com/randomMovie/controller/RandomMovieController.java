@@ -52,6 +52,14 @@ public class RandomMovieController {
 
 		return new ResponseEntity<List<RandomMovie>>(movies, new HttpHeaders(), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "title/{name}", method = RequestMethod.GET)
+	public ResponseEntity<List<RandomMovie>> getByTitle(@PathVariable String name) {
+
+		List<RandomMovie> movies = randomMovie.getByTitle(name);
+
+		return new ResponseEntity<List<RandomMovie>>(movies, new HttpHeaders(), HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "typeChange", method = RequestMethod.GET)
 	public ResponseEntity<String> typeChange() {
