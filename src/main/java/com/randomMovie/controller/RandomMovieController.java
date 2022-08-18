@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.randomMovie.repository.RandomMovie;
@@ -29,9 +30,9 @@ public class RandomMovieController {
 	private RandomMovieService randomMovie;
 
 	@RequestMapping(value = "randomMovies", method = RequestMethod.GET)
-	public ResponseEntity<Set<RandomMovie>> getRandomMovies() {
+	public ResponseEntity<Set<RandomMovie>> getRandomMovies(@RequestParam("vote") String vote, @RequestParam("genre") String genre) {
 
-		Set<RandomMovie> movies = randomMovie.getRandomMovie();
+		Set<RandomMovie> movies = randomMovie.getRandomMovie(vote,genre);
 
 		return new ResponseEntity<Set<RandomMovie>>(movies, new HttpHeaders(), HttpStatus.OK);
 	}

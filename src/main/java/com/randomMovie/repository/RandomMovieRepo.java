@@ -1,6 +1,7 @@
 package com.randomMovie.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -25,7 +26,11 @@ public interface RandomMovieRepo extends MongoRepository<RandomMovie, String> {
 	
     @Query("{$and :[{rating: {$gte: ?0}},{votes_ln: {$gte: ?1}}] }")
     List<RandomMovie> randomGte7(int rating,int votes);
+    
+    
+    
 
-	
+    @Query("{$text:{$search: ?0} ")
+    Set<RandomMovie> filterMatch(String genre , int vote);
 	
 }

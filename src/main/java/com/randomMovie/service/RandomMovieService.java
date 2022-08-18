@@ -1,9 +1,13 @@
 package com.randomMovie.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,11 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.SampleOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.core.query.TextQuery;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.*;
 
 import com.mongodb.DBObject;
 import com.randomMovie.repository.RandomMovie;
@@ -33,7 +41,8 @@ public class RandomMovieService {
 		this.mongoTemplate = mongoTemplate;
 	}
 
-	public Set<RandomMovie> getRandomMovie() {
+	@SuppressWarnings("unchecked")
+	public Set<RandomMovie> getRandomMovie(String vote, String genre) {
 
 		// return randomMovie.getRandomTenMovies();
 
@@ -44,22 +53,62 @@ public class RandomMovieService {
 		Aggregation aggregation1 = Aggregation.newAggregation(Aggregation.sample(10)
 
 		);
+		if (Objects.nonNull(vote) && !vote.equals("undefined")
+				|| Objects.nonNull(genre) && !genre.equals("undefined")) {
+//			MatchOperation matchStage1 = Aggregation.match(Criteria.where("votes_ln").gte(vote).orOperator(Criteria.where("genre").is(genre.split(",")[0])));
+//			//SampleOperation sampleStage = Aggregation.sample(1);
+//			Aggregation aggOp = Aggregation.newAggregation(matchStage1);
+//
+//			AggregationResults<RandomMovie> output = mongoTemplate.aggregate(aggOp, "randomMovie", RandomMovie.class);
+//			
+//			output.forEach(x ->{
+//				System.out.println(x);
+//			});
 
-		MatchOperation matchStage1 = Aggregation.match(Criteria.where("rating").gte(7).and("votes_ln").gt(5000));
-		SampleOperation sampleStage = Aggregation.sample(1);
-		Aggregation aggOp = Aggregation.newAggregation(matchStage1, sampleStage);
+//			TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(
+//					genre);
+//
+//			TextQuery query = TextQuery.queryText(criteria).sortByScore();
+			Sort sort = Sort.by("score");
+			List<RandomMovie> random = new ArrayList<>();
+			List<RandomMovie> list = new ArrayList<>();
+			if (!genre.equals("undefined")) {
+				TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(genre);
+				TextQuery query = TextQuery.queryText(criteria);
 
-		AggregationResults<RandomMovie> output = mongoTemplate.aggregate(aggOp, "randomMovie", RandomMovie.class);
+				random = mongoTemplate.find(query, RandomMovie.class);
+			} else if (!vote.equals("undefined")) {
+				random = randomMovie.randomGte7(7, 2000);
+
+			}
+
+//		    List<RandomMovie> random = mongoTemplate.find(query, RandomMovie.class);
+			// System.out.println(random);
+			//random = randomMovie.randomGte7(7, 2000);
+			Random r = new Random();
+			Set<RandomMovie> setOfMovies = new HashSet<>();
+
+			if (!vote.equals("undefined")) {
+				list = random.stream().filter(x -> x.getVotes_ln() != null).filter(x -> x.getVotes_ln() >= Long.valueOf(vote))
+						.collect(Collectors.toList());
+				// List<RandomMovie> list = randomMovie.findAll();
+				while (setOfMovies.size() != 10) {
+					setOfMovies.add(list.get(r.nextInt(list.size())));
+				}
+			}
+
+			return setOfMovies;
+		}
+
 		Random r = new Random();
 
-		List<RandomMovie> list = randomMovie.randomGte7(7, 5000);
-
+		List<RandomMovie> list = randomMovie.randomGte7(7, 2000);
+		System.out.println(list.size());
 		Set<RandomMovie> setOfMovies = new HashSet<>();
 		// List<RandomMovie> list = randomMovie.findAll();
 		while (setOfMovies.size() != 10) {
 			setOfMovies.add(list.get(r.nextInt(list.size())));
 		}
-		System.out.println(list);
 //		randomMovie.findAll().forEach(x ->{
 //			System.out.println(x);
 //		});
@@ -76,7 +125,10 @@ public class RandomMovieService {
 
 	public void saveTypeChange() {
 		randomMovie.findAll().forEach(x -> {
-			if (x.getVotes() != null) {
+			System.out.println(x.getVotes());
+			if (x.getVotes() == "null") {
+
+			} else if (x.getVotes() != null || x.getVotes() != "") {
 				x.setVotes_ln(Long.valueOf(String.valueOf(x.getVotes()).replace(",", "")));
 				randomMovie.save(x);
 			} else {
