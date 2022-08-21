@@ -54,6 +54,13 @@ public class RandomMovieService {
 		Aggregation aggregation1 = Aggregation.newAggregation(Aggregation.sample(10)
 
 		);
+		if(genre == "null") {
+			genre = "undefined";
+		}
+		if(vote == "null") {
+			vote = "undefined";
+		}
+		
 		if (Objects.nonNull(vote) && !vote.equals("undefined")
 				|| Objects.nonNull(genre) && !genre.equals("undefined") && !genre.equals("")) {
 //			MatchOperation matchStage1 = Aggregation.match(Criteria.where("votes_ln").gte(vote).orOperator(Criteria.where("genre").is(genre.split(",")[0])));
@@ -70,6 +77,7 @@ public class RandomMovieService {
 //					genre);
 //
 //			TextQuery query = TextQuery.queryText(criteria).sortByScore();
+			
 			Sort sort = Sort.by("score");
 			List<RandomMovie> random = new ArrayList<>();
 			List<RandomMovie> list = new ArrayList<>();
