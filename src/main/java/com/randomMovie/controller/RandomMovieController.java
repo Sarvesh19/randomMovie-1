@@ -31,7 +31,12 @@ public class RandomMovieController {
 
 	@RequestMapping(value = "randomMovies", method = RequestMethod.GET)
 	public ResponseEntity<Set<RandomMovie>> getRandomMovies(@RequestParam("vote") String vote, @RequestParam("genre") String genre) {
-
+		if(genre == "null") {
+			genre = "undefined";
+		}
+		if(vote == "null") {
+			vote = "undefined";
+		}
 		Set<RandomMovie> movies = randomMovie.getRandomMovie(vote,genre);
 
 		return new ResponseEntity<Set<RandomMovie>>(movies, new HttpHeaders(), HttpStatus.OK);

@@ -54,12 +54,7 @@ public class RandomMovieService {
 		Aggregation aggregation1 = Aggregation.newAggregation(Aggregation.sample(10)
 
 		);
-		if(genre == "null") {
-			genre = "undefined";
-		}
-		if(vote == "null") {
-			vote = "undefined";
-		}
+		
 		
 		if (Objects.nonNull(vote) && !vote.equals("undefined")
 				|| Objects.nonNull(genre) && !genre.equals("undefined") && !genre.equals("")) {
