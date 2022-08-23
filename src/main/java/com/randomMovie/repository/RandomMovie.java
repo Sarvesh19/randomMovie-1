@@ -18,9 +18,20 @@ public class RandomMovie {
 	private String stars;
 	private String votes;
 	private Long votes_ln;
+	private String language;
 
 	private Integer hitCount;
 	private Integer check;
+	
+	
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
 
 	public ObjectId getId() {
 		return _id;

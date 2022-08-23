@@ -142,20 +142,25 @@ public class RandomMovieService {
 
 	public void saveTypeChange() {
 		randomMovie.findAll().forEach(x -> {
-			System.out.println(x.getVotes());
-			if (x.getVotes_ln() == null) {
-				if (x.getVotes() == "null") {
-					System.out.println(x.getVotes());
-					x.setVotes_ln(0l);
-					randomMovie.save(x);
-				} else if (x.getVotes() != null) {
-					x.setVotes_ln(Long.valueOf(String.valueOf(x.getVotes()).replace(",", "")));
-					randomMovie.save(x);
-				} else {
-					x.setVotes_ln(0l);
-					randomMovie.save(x);
-				}
-			}
+			x.setLanguage("en");
+			randomMovie.save(x);
+			//System.out.println(x.getVotes());
+			
+			
+			
+//			if (x.getVotes_ln() == null) {
+//				if (x.getVotes() == "null") {
+//					System.out.println(x.getVotes());
+//					x.setVotes_ln(0l);
+//					randomMovie.save(x);
+//				} else if (x.getVotes() != null) {
+//					x.setVotes_ln(Long.valueOf(String.valueOf(x.getVotes()).replace(",", "")));
+//					randomMovie.save(x);
+//				} else {
+//					x.setVotes_ln(0l);
+//					randomMovie.save(x);
+//				}
+//			}
 
 		});
 		;
