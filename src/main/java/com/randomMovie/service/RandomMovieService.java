@@ -54,8 +54,7 @@ public class RandomMovieService {
 		Aggregation aggregation1 = Aggregation.newAggregation(Aggregation.sample(10)
 
 		);
-		
-		
+
 		if (Objects.nonNull(vote) && !vote.equals("undefined")
 				|| Objects.nonNull(genre) && !genre.equals("undefined") && !genre.equals("")) {
 //			MatchOperation matchStage1 = Aggregation.match(Criteria.where("votes_ln").gte(vote).orOperator(Criteria.where("genre").is(genre.split(",")[0])));
@@ -72,7 +71,7 @@ public class RandomMovieService {
 //					genre);
 //
 //			TextQuery query = TextQuery.queryText(criteria).sortByScore();
-			
+
 			Sort sort = Sort.by("score");
 			List<RandomMovie> random = new ArrayList<>();
 			List<RandomMovie> list = new ArrayList<>();
@@ -84,9 +83,11 @@ public class RandomMovieService {
 				list = random;
 //				list = random.stream().filter(x -> x.getVotes_ln() != null)
 //						.filter(x -> x.getVotes_ln() >= Long.valueOf(vote)).collect(Collectors.toList());
-			} 
+			}
 			if (!vote.equals("undefined")) {
-				random = randomMovie.randomGte7(7, 2000);
+				if (random.isEmpty())
+					random = randomMovie.randomGte7(7, 2000);
+
 				list = random.stream().filter(x -> x.getVotes_ln() != null)
 						.filter(x -> x.getVotes_ln() >= Long.valueOf(vote)).collect(Collectors.toList());
 			}
@@ -98,7 +99,7 @@ public class RandomMovieService {
 			Set<RandomMovie> setOfMovies = new HashSet<>();
 
 //			if (!vote.equals("undefined")) {
-			
+
 			// List<RandomMovie> list = randomMovie.findAll();
 			if (list.size() <= 10) {
 				return new HashSet<RandomMovie>(list);
@@ -144,10 +145,8 @@ public class RandomMovieService {
 		randomMovie.findAll().forEach(x -> {
 			x.setLanguage("en");
 			randomMovie.save(x);
-			//System.out.println(x.getVotes());
-			
-			
-			
+			// System.out.println(x.getVotes());
+
 //			if (x.getVotes_ln() == null) {
 //				if (x.getVotes() == "null") {
 //					System.out.println(x.getVotes());
